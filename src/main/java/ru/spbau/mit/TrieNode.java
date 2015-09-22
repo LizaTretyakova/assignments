@@ -60,8 +60,12 @@ public class TrieNode {
 
     public boolean remove(String element, int i) {
         if(i == element.length()) {
-            boolean res = isTerminal;
-            isTerminal = false;
+            boolean res = false;
+            if(isTerminal) {
+                size--;
+                res = true;
+                isTerminal = false;
+            }
             return res;
         }
         int curChar = charToIndex(element.charAt(i));
