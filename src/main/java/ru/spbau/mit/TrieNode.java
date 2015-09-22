@@ -27,7 +27,8 @@ public class TrieNode {
 
     public TrieNode goDown(String element, int i) {
         if(i == element.length()) {
-            return isTerminal ? this : null;
+            //return isTerminal ? this : null;
+            return this;
         }
 
         int index = charToIndex(element.charAt(i));
