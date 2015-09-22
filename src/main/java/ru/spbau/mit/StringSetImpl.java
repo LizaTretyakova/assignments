@@ -59,8 +59,8 @@ public class StringSetImpl implements StringSet, StreamSerializable {
         try {
             head.serialize(out);
         } catch(IOException e) {
-            System.out.println("Failed to serialize.");
-            System.out.flush();
+            //System.out.println("Failed to serialize.");
+            //System.out.flush();
             throw new SerializationException();
         }
     }
@@ -74,8 +74,8 @@ public class StringSetImpl implements StringSet, StreamSerializable {
         try {
             head.deserialize(in);
         } catch (IOException e) {
-            System.out.println("Failed to deserialize.");
-            System.out.flush();
+            //System.out.println("Failed to deserialize.");
+            //System.out.flush();
             throw new SerializationException();
         }
     }
