@@ -15,12 +15,11 @@ public class TrieNode {
     boolean isTerminal = false;
 
     public int charToIndex(char c) {
-        int num = Character.getNumericValue(c);
-        if(num >= Character.getNumericValue('a') && num <= Character.getNumericValue('z')) {
-            return num - Character.getNumericValue('a') + 1;
+        if(c >= 'a' && c <= 'z') {
+            return c - 'a' + 1;
         }
-        if(num >= Character.getNumericValue('A') && num <= Character.getNumericValue('Z')) {
-            return num - Character.getNumericValue('A') + 26 + 1;
+        if(c >= 'A' && c <= 'Z') {
+            return c - 'A' + 26 + 1;
         }
         return -1;
     }
