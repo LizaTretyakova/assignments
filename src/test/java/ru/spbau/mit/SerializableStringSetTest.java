@@ -68,4 +68,32 @@ public class SerializableStringSetTest {
         }
         throw new IllegalStateException("Error while class loading");
     }
+
+    @Test
+    public void testSimplePrefixes() {
+        StringSet stringSet = instance();
+
+        assertTrue(stringSet.add("abc"));
+        assertTrue(stringSet.add(""));
+        assertTrue(stringSet.contains(""));
+        assertFalse(stringSet.contains("ab"));
+        assertEquals(2, stringSet.howManyStartsWithPrefix(""));
+        assertEquals(1, stringSet.howManyStartsWithPrefix("a"));
+        assertEquals(0, stringSet.howManyStartsWithPrefix("zdew"));
+        assertEquals(0, stringSet.howManyStartsWithPrefix("z"));
+        assertEquals(2, stringSet.size());
+
+        assertFalse(stringSet.add(""));
+        assertFalse(stringSet.add("abc"));
+        assertEquals(2, stringSet.size());
+
+        assertTrue(stringSet.remove(""));
+        assertEquals(1, stringSet.size());
+
+        assertFalse(stringSet.remove("A"));
+        assertEquals(1, stringSet.size());
+        assertEquals(0, stringSet.howManyStartsWithPrefix("A"));
+        assertEquals(0, stringSet.howManyStartsWithPrefix("AC"));
+    }
+
 }
