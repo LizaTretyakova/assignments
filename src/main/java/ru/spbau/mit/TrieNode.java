@@ -5,16 +5,13 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
-/**
- * Created by liza on 21.09.15.
- */
 public class TrieNode {
     public static final int nextCharSize = 52 + 1;
-    TrieNode[] nextChar = new TrieNode[nextCharSize];
-    int size = 0;
-    boolean isTerminal = false;
+    public TrieNode[] nextChar = new TrieNode[nextCharSize];
+    public int size = 0;
+    public boolean isTerminal = false;
 
-    public int charToIndex(char c) {
+    public static int charToIndex(char c) {
         if(c >= 'a' && c <= 'z') {
             return c - 'a' + 1;
         }
@@ -26,7 +23,6 @@ public class TrieNode {
 
     public TrieNode goDown(String element, int i) {
         if(i == element.length()) {
-            //return isTerminal ? this : null;
             return this;
         }
 
@@ -72,14 +68,16 @@ public class TrieNode {
         boolean removed = false;
         if(nextChar[curChar] != null) {
             removed = nextChar[curChar].remove(element, i + 1);
+            if(nextChar[curChar].size == 0) {
+                nextChar[curChar] = null;
+            }
         }
         size = removed ? size - 1 : size;
         return removed;
     }
 
     public void serialize(OutputStream out) throws IOException {
-        int intIsTerminal = isTerminal ? 1 : 0;
-        out.write(intIsTerminal);
+        out.write(isTerminal ? 1 : 0);
 
         for(int i = 1; i < nextCharSize; i++) {
             if(nextChar[i] != null) {
@@ -92,7 +90,7 @@ public class TrieNode {
     }
 
     public void deserialize(InputStream in) throws IOException {
-        isTerminal = (in.read() == 1) ? true : false;
+        isTerminal = (in.read() == 1);
         if(isTerminal) {
             size++;
         }
@@ -102,11 +100,9 @@ public class TrieNode {
             if(i == 0) {
                 break;
             }
-            else {
-                nextChar[i] = new TrieNode();
-                nextChar[i].deserialize(in);
-                size += nextChar[i].size;
-            }
+            nextChar[i] = new TrieNode();
+            nextChar[i].deserialize(in);
+            size += nextChar[i].size;
         }
     }
 }
