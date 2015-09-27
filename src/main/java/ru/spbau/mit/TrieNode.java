@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
-public class TrieNode {
+class TrieNode {
     public static final int nextCharSize = 52 + 1;
     public TrieNode[] nextChar = new TrieNode[nextCharSize];
     public int size = 0;
@@ -90,7 +90,7 @@ public class TrieNode {
     }
 
     public void deserialize(InputStream in) throws IOException {
-        isTerminal = (in.read() == 1);
+        isTerminal = in.read() == 1;
         if(isTerminal) {
             size++;
         }

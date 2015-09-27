@@ -30,7 +30,7 @@ public class StringSetImpl implements StringSet, StreamSerializable {
         return (tmp != null) ? tmp.size : 0;
     }
 
-    public void serialize(OutputStream out) throws SerializationException {
+    public void serialize(OutputStream out) {
         try {
             head.serialize(out);
         } catch(IOException e) {
@@ -38,7 +38,7 @@ public class StringSetImpl implements StringSet, StreamSerializable {
         }
     }
 
-    public void deserialize(InputStream in) throws SerializationException {
+    public void deserialize(InputStream in) {
         head = new TrieNode();
         try {
             head.deserialize(in);
