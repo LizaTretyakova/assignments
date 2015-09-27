@@ -6,12 +6,12 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 
 class TrieNode {
-    public static final int nextCharSize = 52 + 1;
-    public TrieNode[] nextChar = new TrieNode[nextCharSize];
-    public int size = 0;
-    public boolean isTerminal = false;
+    static final int nextCharSize = 52 + 1;
+    TrieNode[] nextChar = new TrieNode[nextCharSize];
+    int size = 0;
+    boolean isTerminal = false;
 
-    public static int charToIndex(char c) {
+    static int charToIndex(char c) {
         if(c >= 'a' && c <= 'z') {
             return c - 'a' + 1;
         }
@@ -21,7 +21,7 @@ class TrieNode {
         return -1;
     }
 
-    public TrieNode goDown(String element, int i) {
+    TrieNode goDown(String element, int i) {
         if(i == element.length()) {
             return this;
         }
@@ -31,14 +31,15 @@ class TrieNode {
     }
 
 
-    public boolean add(String element, int i) {
+    boolean add(String element, int i) {
         if(i == element.length()) {
-            boolean notExistedBefore = !isTerminal;
-            if(notExistedBefore) {
+            //boolean notExistedBefore = !isTerminal;
+            if(!isTerminal) {
                 size++;
                 isTerminal = true;
+                return true;
             }
-            return notExistedBefore;
+            return false;
         }
         int curChar = charToIndex(element.charAt(i));
 
@@ -53,30 +54,33 @@ class TrieNode {
         return addedNewString;
     }
 
-    public boolean remove(String element, int i) {
+    boolean remove(String element, int i) {
         if(i == element.length()) {
-            boolean res = false;
+            //boolean res = false;
             if(isTerminal) {
                 size--;
-                res = true;
+                //res = true;
                 isTerminal = false;
+                return true;
             }
-            return res;
+            return false;
         }
         int curChar = charToIndex(element.charAt(i));
 
-        boolean removed = false;
-        if(nextChar[curChar] != null) {
-            removed = nextChar[curChar].remove(element, i + 1);
+        //boolean removed = false;
+        if(nextChar[curChar] != null && nextChar[curChar].remove(element, i + 1)) {
+            //removed = nextChar[curChar].remove(element, i + 1);
+            size--;
             if(nextChar[curChar].size == 0) {
                 nextChar[curChar] = null;
             }
+            return true;
         }
-        size = removed ? size - 1 : size;
-        return removed;
+        //size = removed ? size - 1 : size;
+        return false;
     }
 
-    public void serialize(OutputStream out) throws IOException {
+    void serialize(OutputStream out) throws IOException {
         out.write(isTerminal ? 1 : 0);
 
         for(int i = 1; i < nextCharSize; i++) {
@@ -89,7 +93,7 @@ class TrieNode {
         out.write(0);
     }
 
-    public void deserialize(InputStream in) throws IOException {
+    void deserialize(InputStream in) throws IOException {
         isTerminal = in.read() == 1;
         if(isTerminal) {
             size++;
