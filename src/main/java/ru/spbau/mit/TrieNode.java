@@ -29,8 +29,7 @@ class TrieNode {
         int index = charToIndex(element.charAt(i));
         return (nextChar[index] != null) ? nextChar[index].goDown(element, i + 1) : null;
     }
-
-
+    
     boolean add(String element, int i) {
         if(i == element.length()) {
             if(!isTerminal) {
@@ -46,11 +45,11 @@ class TrieNode {
             nextChar[curChar] = new TrieNode();
         }
 
-        boolean addedNewString = nextChar[curChar].add(element, i + 1);
-        if(addedNewString) {
+        if(nextChar[curChar].add(element, i + 1)) {
             size++;
+            return true;
         }
-        return addedNewString;
+        return false;
     }
 
     boolean remove(String element, int i) {
@@ -62,6 +61,7 @@ class TrieNode {
             }
             return false;
         }
+
         int curChar = charToIndex(element.charAt(i));
 
         if(nextChar[curChar] != null && nextChar[curChar].remove(element, i + 1)) {
