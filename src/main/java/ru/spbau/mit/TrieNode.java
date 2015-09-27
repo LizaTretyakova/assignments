@@ -33,7 +33,6 @@ class TrieNode {
 
     boolean add(String element, int i) {
         if(i == element.length()) {
-            //boolean notExistedBefore = !isTerminal;
             if(!isTerminal) {
                 size++;
                 isTerminal = true;
@@ -56,10 +55,8 @@ class TrieNode {
 
     boolean remove(String element, int i) {
         if(i == element.length()) {
-            //boolean res = false;
             if(isTerminal) {
                 size--;
-                //res = true;
                 isTerminal = false;
                 return true;
             }
@@ -67,16 +64,13 @@ class TrieNode {
         }
         int curChar = charToIndex(element.charAt(i));
 
-        //boolean removed = false;
         if(nextChar[curChar] != null && nextChar[curChar].remove(element, i + 1)) {
-            //removed = nextChar[curChar].remove(element, i + 1);
             size--;
             if(nextChar[curChar].size == 0) {
                 nextChar[curChar] = null;
             }
             return true;
         }
-        //size = removed ? size - 1 : size;
         return false;
     }
 
