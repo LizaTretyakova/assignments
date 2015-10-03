@@ -23,6 +23,17 @@ public class PredicateTest {
         }
     };
 
+    static final Predicate<Integer> longTimeTrue = new Predicate<Integer>() {
+        public Boolean apply(Integer x) {
+            int res = 1;
+            for(int i = 1; i < 1e6; i++) {
+                res *= x;
+            }
+            System.out.println(res);
+            return true;
+        }
+    };
+
     @Test
     public void testApply() {
         assertTrue(isZero.apply(0));
@@ -38,6 +49,8 @@ public class PredicateTest {
         assertFalse(isOdd.or(isZero).apply(6));
         assertTrue(isZero.or(isOdd).apply(0));
         assertTrue(isOdd.or(isZero).apply(0));
+
+        assertTrue(isOdd.or(longTimeTrue).apply(5));
     }
 
     @Test
@@ -50,6 +63,8 @@ public class PredicateTest {
         assertFalse(isOdd.and(isZero).apply(0));
         assertTrue(isZero.and(isOdd.not()).apply(0));
         assertTrue(isOdd.not().and(isZero).apply(0));
+
+        assertFalse(isOdd.and(longTimeTrue).apply(6));
     }
 
     @Test
@@ -61,17 +76,17 @@ public class PredicateTest {
 
     @Test
     public void testALWAYS_TRUE() {
-        assertTrue(isZero.ALWAYS_TRUE().apply('a'));
-        assertTrue(isZero.ALWAYS_TRUE().apply(5));
-        assertTrue(isCapital.ALWAYS_TRUE().apply(null));
-        assertTrue(isCapital.ALWAYS_TRUE().apply(false));
+        assertTrue(isZero.ALWAYS_TRUE.apply('a'));
+        assertTrue(isZero.ALWAYS_TRUE.apply(5));
+        assertTrue(isCapital.ALWAYS_TRUE.apply(null));
+        assertTrue(isCapital.ALWAYS_TRUE.apply(false));
     }
 
     @Test
     public void testALWAYS_FALSE() {
-        assertFalse(isZero.ALWAYS_FALSE().apply('a'));
-        assertFalse(isZero.ALWAYS_FALSE().apply(5));
-        assertFalse(isCapital.ALWAYS_FALSE().apply(null));
-        assertFalse(isCapital.ALWAYS_FALSE().apply(false));
+        assertFalse(isZero.ALWAYS_FALSE.apply('a'));
+        assertFalse(isZero.ALWAYS_FALSE.apply(5));
+        assertFalse(isCapital.ALWAYS_FALSE.apply(null));
+        assertFalse(isCapital.ALWAYS_FALSE.apply(false));
     }
 }

@@ -4,31 +4,16 @@ import org.junit.Test;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
 public class CollectionsTest {
-    ArrayList<Integer> list = new ArrayList<Integer>();
-    ArrayList<Integer> list1;
-    ArrayList<Integer> list2;
-    ArrayList<Integer> list3;
-    ArrayList<Integer> list4;
-    ArrayList<Integer> list5;
-    ArrayList<Integer> list6;
+    ArrayList<Integer> list;
 
     public CollectionsTest() {
-        list.add(0);
-        list.add(1);
-        list.add(2);
-        list.add(3);
-        list.add(4);
-        list = (ArrayList<Integer>) Collections.map(Function1Test.square, list);
-        list1 = (ArrayList<Integer>)Collections.filter(PredicateTest.isOdd, list);
-        list2 = (ArrayList<Integer>)Collections.takeWhile(PredicateTest.isOdd, list);
-        list3 = (ArrayList<Integer>)Collections.takeUnless(PredicateTest.isOdd.not(), list);
-        list4 = (ArrayList<Integer>)Collections.takeWhile(PredicateTest.isZero, list);
-        list5 = (ArrayList<Integer>)Collections.takeWhile(PredicateTest.isOdd.not(), list);
-        list6 = (ArrayList<Integer>)Collections.takeUnless(PredicateTest.isOdd, list);
+        Integer[] tmp = {0, 1, 4, 9, 16};
+        list = new ArrayList(Arrays.asList(tmp));
     }
 
     static final Function2<Integer, Integer, Integer> f = new Function2<Integer, Integer, Integer>() {
@@ -45,15 +30,14 @@ public class CollectionsTest {
 
     @Test
     public void testMap() {
-        assertEquals(0, (int) list.get(0));
-        assertEquals(1, (int)list.get(1));
-        assertEquals(4, (int)list.get(2));
-        assertEquals(9, (int)list.get(3));
-        assertEquals(16, (int)list.get(4));
+        Integer[] tmp = {0, 1, 2, 3, 4};
+        ArrayList<Integer> l = (ArrayList<Integer>) Collections.map(Function1Test.square, new ArrayList(Arrays.asList(tmp)));
+        assertEquals(list, l);
     }
 
     @Test
     public void testFilter() {
+        ArrayList<Integer> list1 = (ArrayList<Integer>)Collections.filter(PredicateTest.isOdd, list);
         assertEquals(2, list1.size());
         assertEquals(1, (int)list1.get(0));
         assertEquals(9, (int)list1.get(1));
@@ -61,12 +45,19 @@ public class CollectionsTest {
 
     @Test
     public void testTakeWhile() {
+        ArrayList<Integer> list3 = (ArrayList<Integer>)Collections.takeUnless(PredicateTest.isOdd.not(), list);
+        ArrayList<Integer> list4 = (ArrayList<Integer>)Collections.takeWhile(PredicateTest.isZero, list);
+        ArrayList<Integer> list5 = (ArrayList<Integer>)Collections.takeWhile(PredicateTest.isOdd.not(), list);
         assertEquals(list4, list5);
         assertEquals(0, list3.size());
     }
 
     @Test
     public void testTakeUnless() {
+        ArrayList<Integer> list2 = (ArrayList<Integer>)Collections.takeWhile(PredicateTest.isOdd, list);
+        ArrayList<Integer> list3 = (ArrayList<Integer>)Collections.takeUnless(PredicateTest.isOdd.not(), list);
+        ArrayList<Integer> list5 = (ArrayList<Integer>)Collections.takeWhile(PredicateTest.isOdd.not(), list);
+        ArrayList<Integer> list6 = (ArrayList<Integer>)Collections.takeUnless(PredicateTest.isOdd, list);
         assertEquals(list2, list3);
         assertEquals(list5, list6);
     }
@@ -84,6 +75,7 @@ public class CollectionsTest {
 
     @Test
     public void testGenerics() {
+        ArrayList<Integer> list1 = (ArrayList<Integer>)Collections.filter(PredicateTest.isOdd, list);
         assertEquals(list1, Collections.filter(p, list1));
     }
 }

@@ -36,19 +36,19 @@ public class Function2Test {
 
     @Test
     public void testApply() {
-        assertEquals((Integer)4, sum.apply((Integer) 2, (Integer) 2));
-        assertEquals(sum.apply((Integer)2, (Integer)2), sum.apply((Integer) 1, (Integer) 3));
-        assertEquals(mult.apply((Integer)3, (Integer)5), sum.apply((Integer) 1, (Integer) 14));
+        assertEquals(4, (int)sum.apply(2, 2));
+        assertEquals(sum.apply(2, 2), sum.apply(1, 3));
+        assertEquals(mult.apply(3, 5), sum.apply(1, 14));
     }
 
     @Test
     public void testBind1() {
-        assertEquals((Integer)12, frac60.apply(5));
+        assertEquals(12, (int)frac60.apply(5));
     }
 
     @Test
     public void testBind2() {
-        assertEquals((Integer)12, frac5.apply(60));
+        assertEquals(12, (int)frac5.apply(60));
     }
 
     @Test
@@ -58,7 +58,7 @@ public class Function2Test {
 
     @Test
     public void testCompose() {
-        assertEquals((Integer) 144, mult.compose(frac5).apply(144, 5));
+        assertEquals(144, (int)mult.compose(frac5).apply(144, 5));
     }
 
     @Test
