@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public abstract class Collections {
-    public static <T, R> Iterable<R> map(final Function1<? super T, R> f, final Iterable<T> collection) {
+    public static <T, R> Iterable<R> map(final Function1<? super T, ? extends R> f, final Iterable<T> collection) {
         List<R> result = new ArrayList<R>();
         for (T object : collection) {
             result.add(f.apply(object));
@@ -15,8 +15,7 @@ public abstract class Collections {
 
     public static <T> Iterable<T> filter(final Predicate<? super T> p, final Iterable<T> collection) {
         List<T> result = new ArrayList<T>();
-        Iterator<T> it = collection.iterator();
-        while(it.hasNext()) {
+        for(Iterator<T> it = collection.iterator(); it.hasNext();  ) {
             T object = it.next();
             if(p.apply(object)) {
                 result.add(object);
@@ -27,8 +26,7 @@ public abstract class Collections {
 
     public static <T> Iterable<T> takeWhile(final Predicate<? super T> p, final Iterable<T> collection) {
         List<T> result = new ArrayList<T>();
-        Iterator<T> it = collection.iterator();
-        while(it.hasNext()) {
+        for(Iterator<T> it = collection.iterator(); it.hasNext(); ) {
             T object = it.next();
             if(!p.apply(object)) {
                 return result;
@@ -39,22 +37,12 @@ public abstract class Collections {
     }
 
     public static <T> Iterable<T> takeUnless(final Predicate<? super T> p, final Iterable<T> collection) {
-        List<T> result = new ArrayList<T>();
-        Iterator<T> it = collection.iterator();
-        while(it.hasNext()) {
-            T object =it.next();
-            if(p.apply(object)) {
-                return result;
-            }
-            result.add(object);
-        }
-        return result;
+        return takeWhile(p.not(), collection);
     }
 
     public static <T, R> R foldl(final Function2<? super R, ? super T, R> f, final R start, final Iterable<T> collection) {
         R result = start;
-        Iterator<T> it = collection.iterator();
-        while(it.hasNext()) {
+        for(Iterator<T> it = collection.iterator(); it.hasNext(); ) {
             T object = it.next();
             result = f.apply(result, object);
         }
