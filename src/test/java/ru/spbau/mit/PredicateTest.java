@@ -23,13 +23,11 @@ public class PredicateTest {
         }
     };
 
-    static final Predicate<Integer> longTimeTrue = new Predicate<Integer>() {
+    static final Predicate<Integer> badPredicate = new Predicate<Integer>() {
         public Boolean apply(Integer x) {
-            int res = 1;
-            for(int i = 1; i < 1e6; i++) {
-                res *= x;
+            if(x >= 0) {
+                throw new RuntimeException();
             }
-            System.out.println(res);
             return true;
         }
     };
@@ -50,7 +48,7 @@ public class PredicateTest {
         assertTrue(isZero.or(isOdd).apply(0));
         assertTrue(isOdd.or(isZero).apply(0));
 
-        assertTrue(isOdd.or(longTimeTrue).apply(5));
+        assertTrue(isOdd.or(badPredicate).apply(5));
     }
 
     @Test
@@ -64,7 +62,7 @@ public class PredicateTest {
         assertTrue(isZero.and(isOdd.not()).apply(0));
         assertTrue(isOdd.not().and(isZero).apply(0));
 
-        assertFalse(isOdd.and(longTimeTrue).apply(6));
+        assertFalse(isOdd.and(badPredicate).apply(6));
     }
 
     @Test
