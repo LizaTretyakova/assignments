@@ -35,7 +35,7 @@ public class CollectionsTest {
     public void testFilter() {
         List<Integer> list1 = (List<Integer>)Collections.filter(PredicateTest.isOdd, list);
         assertEquals(2, list1.size());
-        assertEquals(1, (int)list1.get(0));
+        assertEquals(1, (int) list1.get(0));
         assertEquals(9, (int) list1.get(1));
     }
 
@@ -60,12 +60,12 @@ public class CollectionsTest {
 
     @Test
     public void testFoldl() {
-        assertEquals(-30, (int)Collections.foldl(f, 0, list));
+        assertEquals(-30, (int) Collections.foldl(f, 0, list));
     }
 
     @Test
     public void testFoldr() {
-        assertEquals(10, (int)Collections.foldr(f, 0, list));
+        assertEquals(10, (int) Collections.foldr(f, 0, list));
         assertEquals(Collections.foldl(Function2Test.sum, 0, list), Collections.foldr(Function2Test.sum, 0, list));
     }
 

@@ -26,7 +26,7 @@ public class PredicateTest {
     static final Predicate<Integer> badPredicate = new Predicate<Integer>() {
         public Boolean apply(Integer x) {
             if(x >= 0) {
-                throw new RuntimeException();
+                fail();
             }
             return true;
         }
