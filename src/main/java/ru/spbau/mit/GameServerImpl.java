@@ -31,11 +31,11 @@ public class GameServerImpl implements GameServer {
                 try {
                     Integer propertyValue = detectInteger(properties.getProperty(property));
                     Method setter = pluginClass.getMethod(setterName, Integer.TYPE);
-                    setter.invoke(propertyValue);
+                    setter.invoke(plugin, propertyValue);
                 }
                 catch (NumberFormatException e) {
                     Method setter = pluginClass.getMethod(setterName, String.class);
-                    setter.invoke(properties.getProperty(property));
+                    setter.invoke(plugin, properties.getProperty(property));
                 }
             }
 

@@ -1,9 +1,8 @@
 package ru.spbau.mit;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -31,11 +30,11 @@ public class QuizGame implements Game {
     private static final String STOP = "Game has been stopped by ";
 
 
-    public void setDelayUntilNextLetter(Integer delay) {
+    public void setDelayUntilNextLetter(int delay) {
         delayUntilNextLetter = delay;
     }
 
-    public void setMaxLettersToOpen(Integer cnt) {
+    public void setMaxLettersToOpen(int cnt) {
         maxLettersToOpen = cnt;
     }
 
@@ -44,18 +43,21 @@ public class QuizGame implements Game {
         initDictionary(path);
     }
 
-    private void initDictionary(String path) {
-        List<String> lines;
+    public void initDictionary(String path) {
         try {
-            lines = Files.readAllLines(Paths.get(path));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        for(String line: lines) {
-            String[] questionAndAnswer = line.split(";");
-            questions.add(questionAndAnswer[0]);
-            answers.add(questionAndAnswer[1]);
+//            Path file = Paths.get(path);
+//            lines = Files.readAllLines(file);
+            File file = new File(path);
+            Scanner lines = new Scanner(file);
+            while(lines.hasNextLine()) {
+                String[] questionAndAnswer = lines.nextLine().split(";");
+                questions.add(questionAndAnswer[0]);
+                answers.add(questionAndAnswer[1]);
+            }
             curQuestion = 0;
+        } catch (FileNotFoundException e) {
+            System.err.println("File is not found, path: " + path);
+            System.exit(1);
         }
     }
 
