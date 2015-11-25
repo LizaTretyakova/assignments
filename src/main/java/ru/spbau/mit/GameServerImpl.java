@@ -1,6 +1,7 @@
 package ru.spbau.mit;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 
 
@@ -29,10 +30,12 @@ public class GameServerImpl implements GameServer {
                 String setterName = "set" + Character.toUpperCase(property.charAt(0)) + property.substring(1);
                 try {
                     Integer propertyValue = detectInteger(properties.getProperty(property));
-                    pluginClass.getMethod(setterName, Integer.TYPE).invoke(propertyValue);
+                    Method setter = pluginClass.getMethod(setterName, Integer.TYPE);
+                    setter.invoke(propertyValue);
                 }
                 catch (NumberFormatException e) {
-                    pluginClass.getMethod(setterName, String.class).invoke(properties.getProperty(property));
+                    Method setter = pluginClass.getMethod(setterName, String.class);
+                    setter.invoke(properties.getProperty(property));
                 }
             }
 
@@ -45,6 +48,8 @@ public class GameServerImpl implements GameServer {
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         } catch (InvocationTargetException e) {
+            System.out.println(e.getMessage());
+            System.out.flush();
             throw new RuntimeException(e);
         }
     }
