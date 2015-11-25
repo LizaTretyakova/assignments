@@ -64,6 +64,8 @@ public class QuizGame implements Game {
     public QuizGame(GameServer server) {
         //throw new UnsupportedOperationException("TODO: implement");
         gameServer = server;
+        questions = new ArrayList<String>();
+        answers = new ArrayList<String>();
         game = new Thread(new Runnable() {
             @Override
             public void run() {
