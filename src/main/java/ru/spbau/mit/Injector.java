@@ -12,7 +12,8 @@ public class Injector {
     private static List<String> implClassNames;
 
     public static Object initialize(String rootClassName, List<String> implementationClassNames) throws Exception {
-        implClassNames = implementationClassNames;
+        implClassNames = new ArrayList<>(implementationClassNames);
+        implClassNames.add(rootClassName);
         Object res;
         try {
             res = createObjectByName(rootClassName);
@@ -28,10 +29,9 @@ public class Injector {
 
     private static Object createObjectByName(String resName) throws Exception {
         //getting parameters' types we need to create an instance of resName
-        List<Class<?>> paramTypes;
-        paramTypes = Arrays.asList(Class.forName(resName).getConstructors()[0].getParameterTypes());
-
+        List<Class<?>> paramTypes = Arrays.asList(Class.forName(resName).getConstructors()[0].getParameterTypes());
         ArrayList<Object> params = new ArrayList<>();
+
         for (Class<?> paramType : paramTypes) {
             String parameterTypeName = paramType.getName();//next parameter type we need
             if (used.containsKey(parameterTypeName)) {//if we used it that's a cycle
