@@ -34,7 +34,7 @@ public class Injector {
 
         for (Class<?> paramType : paramTypes) {
             String parameterTypeName = paramType.getName();//next parameter type we need
-            if (used.containsKey(parameterTypeName)) {//if we used it that's a cycle
+            if (used.containsKey(parameterTypeName) && used.get(parameterTypeName)) {//if we used it that's a cycle
                 throw new InjectionCycleException();
             }
             used.put(parameterTypeName, true);
@@ -51,7 +51,7 @@ public class Injector {
                     }
                 }
             }
-            if (!instances.containsKey(parameterTypeName)) {
+            if (cnt == 0 || !instances.containsKey(parameterTypeName)) {
                 throw new ImplementationNotFoundException();
             }
             params.add(instances.get(parameterTypeName));
