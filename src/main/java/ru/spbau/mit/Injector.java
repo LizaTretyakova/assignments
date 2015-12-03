@@ -57,9 +57,9 @@ public class Injector {
                 if(used.containsKey(name) && used.get(name)) {
                     throw new InjectionCycleException();
                 }
-                instances.put(parameterTypeName, createObjectByName(name));
+                instances.put(name, createObjectByName(name));
             }
-            params.add(instances.get(parameterTypeName));
+            params.add(instances.get(name));
         }
 
         used.put(resName, false);
