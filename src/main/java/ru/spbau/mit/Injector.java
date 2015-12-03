@@ -31,13 +31,13 @@ public class Injector {
         //getting parameters' types we need to create an instance of resName
         List<Class<?>> paramTypes = Arrays.asList(Class.forName(resName).getConstructors()[0].getParameterTypes());
         ArrayList<Object> params = new ArrayList<>();
+        used.put(resName, true);
 
         for (Class<?> paramType : paramTypes) {
             String parameterTypeName = paramType.getName();//next parameter type we need
             if(used.containsKey(parameterTypeName) && used.get(parameterTypeName)) {
                 throw new InjectionCycleException();
             }
-            used.put(parameterTypeName, true);
 
             int cnt = 0;
             for (String implName : implClassNames) {//search for implementation of the current parameter type
@@ -55,10 +55,9 @@ public class Injector {
                 throw new ImplementationNotFoundException();
             }
             params.add(instances.get(parameterTypeName));
-            used.put(parameterTypeName, false);
         }
 
-
+        used.put(resName, false);
         return Class.forName(resName).getConstructors()[0].newInstance(params.toArray());
     }
 }
