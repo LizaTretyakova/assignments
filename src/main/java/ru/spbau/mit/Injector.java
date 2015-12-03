@@ -34,7 +34,7 @@ public class Injector {
 
         for (Class<?> paramType : paramTypes) {
             String parameterTypeName = paramType.getName();//next parameter type we need
-            if (used.containsKey(parameterTypeName) && used.get(parameterTypeName)) {//if we used it that's a cycle
+            if(used.containsKey(parameterTypeName) && used.get(parameterTypeName)) {
                 throw new InjectionCycleException();
             }
             used.put(parameterTypeName, true);
@@ -42,16 +42,16 @@ public class Injector {
             int cnt = 0;
             for (String implName : implClassNames) {//search for implementation of the current parameter type
                 if (Class.forName(parameterTypeName).isAssignableFrom(Class.forName(implName))) {
+                    if (cnt > 0) {
+                        throw new AmbiguousImplementationException();
+                    }
+                    cnt++;
                     if (!instances.containsKey(parameterTypeName)) {
-                        if (cnt > 0) {
-                            throw new AmbiguousImplementationException();
-                        }
-                        cnt++;
                         instances.put(parameterTypeName, createObjectByName(implName));
                     }
                 }
             }
-            if (cnt == 0 || !instances.containsKey(parameterTypeName)) {
+            if (cnt == 0) {
                 throw new ImplementationNotFoundException();
             }
             params.add(instances.get(parameterTypeName));
